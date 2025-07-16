@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/models/todo.dart';
-import 'package:todo_app/view_mdoels/TodosViewModel.dart';
 import 'package:todo_app/widgets/todo_item.dart';
 
+import '../view_models/todos_view_model.dart';
 import '../widgets/todos_screen_header.dart';
 
 class TodosScreen extends StatelessWidget {

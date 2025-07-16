@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/screens/TodosScreen.dart';
-import 'package:todo_app/view_mdoels/TodosViewModel.dart';
+import 'package:todo_app/screens/todos_screen.dart';
+import 'package:todo_app/view_models/todos_view_model.dart';
 
 void main() {
   runApp(const MyApp());
