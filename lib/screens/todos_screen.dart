@@ -4,6 +4,7 @@ import 'package:todo_app/models/todo.dart';
 import 'package:todo_app/screens/add_new_task_screen.dart';
 import 'package:todo_app/widgets/todo_item.dart';
 
+import '../view_models/add_new_task_view_model.dart';
 import '../view_models/todos_view_model.dart';
 import '../widgets/todos_screen_header.dart';
 
@@ -90,7 +91,10 @@ class TodosScreen extends StatelessWidget {
                       isScrollControlled: true,
                       useSafeArea: true,
                       builder: (context) {
-                        return AddNewTaskScreen();
+                        return ChangeNotifierProvider(
+                          create: (context) => AddNewTaskViewModel(),
+                          child: AddNewTaskScreen(),
+                        );
                       },
                     );
                   },

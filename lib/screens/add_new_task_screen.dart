@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/models/category.dart';
-import 'package:todo_app/widgets/category_button.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/view_models/add_new_task_view_model.dart';
 import 'package:todo_app/widgets/custom_text_field.dart';
 import 'package:todo_app/widgets/svg_image.dart';
 
 import '../widgets/add_new_task_screen_header.dart';
+import '../widgets/category_selector.dart';
 
 class AddNewTaskScreen extends StatelessWidget {
   const AddNewTaskScreen({super.key});
@@ -16,91 +17,13 @@ class AddNewTaskScreen extends StatelessWidget {
         color: Color(0xffF1F5F9),
         child: Column(
           children: [
-            AddNewTaskScreenHeader(onCloseButtonPressed: () {
-              Navigator.pop(context);
-            },),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  SizedBox(height: 24),
-                  Column(
-                    spacing: 24,
-                    children: [
-                      CustomTextField(
-                        title: "Task Title",
-                        maxLines: 1,
-                        hint: "Task Title",
-                        onChange: (value) {
-
-                        },
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        spacing: 24,
-                        children: [
-                          Text(
-                            "Category",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Row(
-                            spacing: 16,
-                            children: [
-                              CategoryButton(category: Category.task),
-                              CategoryButton(category: Category.event),
-                              CategoryButton(category: Category.goal),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        spacing: 8,
-                        children: [
-                          CustomTextField(
-                            hint: "Date",
-                            title: "Date",
-                            width: 175,
-                            suffixIcon: IconButton(
-                              onPressed: () {},
-                              icon: SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: SVGImage(
-                                  imageUri: "lib/assets/icons/ic_calendar.svg",
-                                ),
-                              ),
-                            ),
-                            maxLines: 1,
-                          ),
-                          CustomTextField(
-                            hint: "Time",
-                            title: "Time",
-                            width: 175,
-                            suffixIcon: IconButton(
-                              onPressed: () {},
-                              icon: SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: SVGImage(
-                                  imageUri: "lib/assets/icons/ic_clock.svg",
-                                ),
-                              ),
-                            ),
-                            maxLines: 1,
-                          ),
-                        ],
-                      ),
-                      CustomTextField(hint: "Notes", title: "Notes", height: 177),
-                    ],
-                  ),
-        
-                ],
-              ),
+            AddNewTaskScreenHeader(
+              onCloseButtonPressed: () {
+                Navigator.pop(context);
+              },
             ),
+            SizedBox(height: 24),
+            _buildBody(context),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -108,11 +31,13 @@ class AddNewTaskScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+
+                  },
                   style: ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(Color(0xff4A3780)),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Save",
                     style: TextStyle(
                       fontSize: 16,
@@ -123,9 +48,84 @@ class AddNewTaskScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24,)
+            const SizedBox(height: 24),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          Column(
+            spacing: 24,
+            children: [
+              CustomTextField(
+                title: "Task Title",
+                maxLines: 1,
+                hint: "Task Title",
+                onChange: (value) {
+                  context.read<AddNewTaskViewModel>().updateOnly(title: value);
+                },
+              ),
+              CategorySelector(),
+              Row(
+                spacing: 8,
+                children: [
+                  CustomTextField(
+                    hint: "Date",
+                    title: "Date",
+                    onChange: (value) {
+                      context.read<AddNewTaskViewModel>().updateOnly(date: value);
+                    },
+                    width: 175,
+                    suffixIcon: IconButton(
+                      onPressed: () {},
+                      icon: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: SVGImage(
+                          imageUri: "lib/assets/icons/ic_calendar.svg",
+                        ),
+                      ),
+                    ),
+                    maxLines: 1,
+                  ),
+                  CustomTextField(
+                    hint: "Time",
+                    title: "Time",
+                    onChange: (value) {
+                      context.read<AddNewTaskViewModel>().updateOnly(time: value);
+                    },
+                    width: 175,
+                    suffixIcon: IconButton(
+                      onPressed: () {},
+                      icon: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: SVGImage(
+                          imageUri: "lib/assets/icons/ic_clock.svg",
+                        ),
+                      ),
+                    ),
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+              CustomTextField(
+                hint: "Notes",
+                title: "Notes",
+                height: 177,
+                onChange: (value) {
+                  context.read<AddNewTaskViewModel>().updateOnly(note: value);
+                },
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -32,7 +32,7 @@ class _TodoItemState extends State<TodoItem> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CategoryButton(category: widget.todo.category),
+            CategoryButton(category: widget.todo.category, isSelected: false,),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
