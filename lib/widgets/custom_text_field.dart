@@ -25,8 +25,6 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  final controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -48,7 +46,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
             child: TextField(
               onChanged: widget.onChange,
               maxLines: widget.maxLines,
-              controller: controller,
               clipBehavior: Clip.hardEdge,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(left: 12, right: 12),

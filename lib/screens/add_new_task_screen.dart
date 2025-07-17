@@ -31,6 +31,9 @@ class AddNewTaskScreen extends StatelessWidget {
                         title: "Task Title",
                         maxLines: 1,
                         hint: "Task Title",
+                        onChange: (value) {
+
+                        },
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
