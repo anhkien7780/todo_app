@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/widgets/svg_image.dart';
 
 class AddNewTaskScreenHeader extends StatelessWidget {
-  const AddNewTaskScreenHeader({super.key});
+  final VoidCallback onCloseButtonPressed;
+
+  const AddNewTaskScreenHeader({super.key, required this.onCloseButtonPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class AddNewTaskScreenHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: onCloseButtonPressed,
               icon: Container(
                 width: 48,
                 height: 48,

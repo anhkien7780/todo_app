@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/models/todo.dart';
+import 'package:todo_app/screens/add_new_task_screen.dart';
 import 'package:todo_app/widgets/todo_item.dart';
 
 import '../view_models/todos_view_model.dart';
@@ -83,7 +84,16 @@ class TodosScreen extends StatelessWidget {
                     backgroundColor: WidgetStatePropertyAll(Color(0xff4A3780)),
                     fixedSize: WidgetStatePropertyAll(Size(358, 56)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (context) {
+                        return AddNewTaskScreen();
+                      },
+                    );
+                  },
                   child: Text(
                     "Add New Task",
                     style: TextStyle(
