@@ -1,9 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:todo_app/models/category.dart';
+import 'package:todo_app/view_models/todos_view_model.dart';
 
 import '../models/todo.dart';
 
 class AddNewTaskViewModel extends ChangeNotifier {
+
+  late final TodosViewModel todosViewModel;
+
+  AddNewTaskViewModel({required this.todosViewModel});
+
   Todo todo = Todo(title: "", category: Category.task, isCompleted: false);
 
   void updateCategory(Category category) {

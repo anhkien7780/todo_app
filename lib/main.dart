@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/screens/add_new_task_screen.dart';
 import 'package:todo_app/screens/todos_screen.dart';
-import 'package:todo_app/view_models/add_new_task_view_model.dart';
 import 'package:todo_app/view_models/todos_view_model.dart';
 
 void main() {

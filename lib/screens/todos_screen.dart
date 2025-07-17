@@ -13,8 +13,11 @@ class TodosScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Todo> completedTodos = context.read<TodosViewModel>().completedTodos;
-    List<Todo> unCompletedTodos = context.read<TodosViewModel>().completedTodos;
+    final todosViewModel = context.read<TodosViewModel>();
+    List<Todo> completedTodos = context.watch<TodosViewModel>().completedTodos;
+    List<Todo> unCompletedTodos = context
+        .watch<TodosViewModel>()
+        .unCompletedTodos;
 
     return Scaffold(
       backgroundColor: Color(0xffF1F5F9),
@@ -30,49 +33,9 @@ class TodosScreen extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: 100, right: 16, left: 16),
                   addAutomaticKeepAlives: false,
                   children: [
-                    Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        color: Color(0xffE5E9ED),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Column(
-                        spacing: 1,
-                        children: List.generate(completedTodos.length, (index) {
-                          return TodoItem(todo: completedTodos[index]);
-                        }),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24),
-                      child: Text(
-                        "Completed",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        color: Color(0xffE5E9ED),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Column(
-                          children: List.generate(unCompletedTodos.length, (
-                            index,
-                          ) {
-                            return TodoItem(todo: unCompletedTodos[index]);
-                          }),
-                        ),
-                      ),
-                    ),
+                    _buildUncompletedTodoList(unCompletedTodos),
+                    if (completedTodos.isNotEmpty) _buildCompletedSeparator(),
+                    _buildCompletedTodoList(completedTodos),
                   ],
                 ),
               ),
@@ -80,36 +43,91 @@ class TodosScreen extends StatelessWidget {
                 bottom: 24,
                 right: 16,
                 left: 16,
-                child: OutlinedButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Color(0xff4A3780)),
-                    fixedSize: WidgetStatePropertyAll(Size(358, 56)),
-                  ),
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (context) {
-                        return ChangeNotifierProvider(
-                          create: (context) => AddNewTaskViewModel(),
-                          child: AddNewTaskScreen(),
-                        );
-                      },
-                    );
-                  },
-                  child: Text(
-                    "Add New Task",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                child: _buildAskNewTask(context, todosViewModel),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAskNewTask(BuildContext context, TodosViewModel todosViewModel) {
+    return OutlinedButton(
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(Color(0xff4A3780)),
+        fixedSize: WidgetStatePropertyAll(Size(358, 56)),
+      ),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          useSafeArea: true,
+          builder: (context) {
+            return ChangeNotifierProvider(
+              create: (_) =>
+                  AddNewTaskViewModel(todosViewModel: todosViewModel),
+              child: AddNewTaskScreen(),
+            );
+          },
+        );
+      },
+      child: Text(
+        "Add New Task",
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUncompletedTodoList(List<Todo> unCompletedTodos) {
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        color: Color(0xffE5E9ED),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+        child: Column(
+          children: List.generate(unCompletedTodos.length, (index) {
+            return TodoItem(todo: unCompletedTodos[index]);
+          }),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCompletedSeparator() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 24),
+      child: Text(
+        "Completed",
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCompletedTodoList(List<Todo> completedTodos) {
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        color: Color(0xffE5E9ED),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+        child: Column(
+          children: List.generate(completedTodos.length, (index) {
+            return TodoItem(todo: completedTodos[index]);
+          }),
         ),
       ),
     );
