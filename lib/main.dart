@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/screens/add_new_task_screen.dart';
 import 'package:todo_app/screens/todos_screen.dart';
 import 'package:todo_app/view_models/todos_view_model.dart';
 
@@ -23,8 +24,9 @@ class MyApp extends StatelessWidget {
           create: (context) => TodosViewModel(),
           child: TodosScreen(),
         ),
+        "/add_new_task_screen": (context) => AddNewTaskScreen(),
       },
-      initialRoute: "/",
+      initialRoute: "/add_new_task_screen",
     );
   }
 }

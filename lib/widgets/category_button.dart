@@ -4,8 +4,15 @@ import 'package:todo_app/models/category.dart';
 
 class CategoryButton extends StatefulWidget {
   final Category category;
+  final VoidCallback? onPressed;
+  final bool? isSelected;
 
-  const CategoryButton({super.key, required this.category});
+  const CategoryButton({
+    super.key,
+    required this.category,
+    this.onPressed,
+    this.isSelected,
+  });
 
   @override
   State<CategoryButton> createState() => _CategoryButtonState();
@@ -14,11 +21,16 @@ class CategoryButton extends StatefulWidget {
 class _CategoryButtonState extends State<CategoryButton> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: _buildColor()),
-      child: _buildIcon(),
+    return IconButton(
+      onPressed: () {
+        widget.onPressed;
+      },
+      icon: Container(
+        width: 48,
+        height: 48,
+        decoration: BoxDecoration(shape: BoxShape.circle, color: _buildColor()),
+        child: _buildIcon(),
+      ),
     );
   }
 
@@ -36,11 +48,7 @@ class _CategoryButtonState extends State<CategoryButton> {
         break;
     }
     return Center(
-      child: SvgPicture.asset(
-          width: 24,
-          height: 24,
-          path, fit:
-      BoxFit.contain),
+      child: SvgPicture.asset(width: 24, height: 24, path, fit: BoxFit.contain),
     );
   }
 

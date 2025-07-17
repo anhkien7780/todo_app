@@ -16,84 +16,86 @@ class TodosScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Color(0xffF1F5F9),
-      body: Center(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Positioned.fill(child: TodosScreenHeader()),
-            Positioned.fill(
-              top: 158,
-              child: ListView(
-                padding: EdgeInsets.only(bottom: 100, right: 16, left: 16),
-                addAutomaticKeepAlives: false,
-                children: [
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      color: Color(0xffE5E9ED),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      spacing: 1,
-                      children: List.generate(completedTodos.length, (index) {
-                        return TodoItem(todo: completedTodos[index]);
-                      }),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24),
-                    child: Text(
-                      "Completed",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      color: Color(0xffE5E9ED),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Container(
+      body: SafeArea(
+        child: Center(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Positioned.fill(child: TodosScreenHeader()),
+              Positioned.fill(
+                top: 158,
+                child: ListView(
+                  padding: EdgeInsets.only(bottom: 100, right: 16, left: 16),
+                  addAutomaticKeepAlives: false,
+                  children: [
+                    Container(
+                      clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
+                        color: Color(0xffE5E9ED),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(
-                        children: List.generate(unCompletedTodos.length, (
-                          index,
-                        ) {
-                          return TodoItem(todo: unCompletedTodos[index]);
+                        spacing: 1,
+                        children: List.generate(completedTodos.length, (index) {
+                          return TodoItem(todo: completedTodos[index]);
                         }),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              bottom: 24,
-              right: 16,
-              left: 16,
-              child: OutlinedButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Color(0xff4A3780)),
-                  fixedSize: WidgetStatePropertyAll(Size(358, 56)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24),
+                      child: Text(
+                        "Completed",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        color: Color(0xffE5E9ED),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Column(
+                          children: List.generate(unCompletedTodos.length, (
+                            index,
+                          ) {
+                            return TodoItem(todo: unCompletedTodos[index]);
+                          }),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                onPressed: () {},
-                child: Text(
-                  "Add New Task",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+              ),
+              Positioned(
+                bottom: 24,
+                right: 16,
+                left: 16,
+                child: OutlinedButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Color(0xff4A3780)),
+                    fixedSize: WidgetStatePropertyAll(Size(358, 56)),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "Add New Task",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

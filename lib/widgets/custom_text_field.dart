@@ -6,7 +6,8 @@ class CustomTextField extends StatefulWidget {
   final String title;
   final String hint;
   final ValueChanged<String>? onChange;
-  final Widget? suffix;
+  final Widget? suffixIcon;
+  final int? maxLines;
 
   const CustomTextField({
     super.key,
@@ -15,7 +16,8 @@ class CustomTextField extends StatefulWidget {
     this.width,
     this.height,
     this.onChange,
-    this.suffix,
+    this.suffixIcon,
+    this.maxLines,
   });
 
   @override
@@ -29,32 +31,45 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.width,
-      height: widget.height,
       child: Column(
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             widget.title,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
           ),
-          TextField(
-            onChanged: widget.onChange,
-            maxLines: 1,
-            controller: controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
-              ),
-              hint: Text(
-                widget.hint,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey.withValues(alpha: 20),
+          Container(
+            height: widget.height,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: TextField(
+              onChanged: widget.onChange,
+              maxLines: widget.maxLines,
+              controller: controller,
+              clipBehavior: Clip.hardEdge,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(left: 12, right: 12),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: Colors.transparent),
                 ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: Colors.transparent),
+                ),
+                hint: Text(
+                  widget.hint,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey.withAlpha(180),
+                  ),
+                ),
+                suffixIcon: widget.suffixIcon,
               ),
-              suffix: widget.suffix,
             ),
           ),
         ],
