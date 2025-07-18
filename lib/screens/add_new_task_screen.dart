@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/view_models/add_new_task_view_model.dart';
@@ -61,6 +62,8 @@ class AddNewTaskScreen extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
+    DateTime dateTime = DateTime.now();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -85,14 +88,25 @@ class AddNewTaskScreen extends StatelessWidget {
                   CustomTextField(
                     hint: "Date",
                     title: "Date",
-                    onChange: (value) {
+                    onChange: (newDate) {
                       context.read<AddNewTaskViewModel>().updateOnly(
-                        date: value,
+                        date: newDate,
                       );
                     },
                     width: 175,
                     suffixIcon: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _buildCupertinoDateTime(
+                          context,
+                          dateTime,
+                          CupertinoDatePickerMode.date,
+                          (newDate) {
+                            context.read<AddNewTaskViewModel>().updateOnly(
+                              date: newDate.toString(),
+                            );
+                          },
+                        );
+                      },
                       icon: SizedBox(
                         height: 20,
                         width: 20,
@@ -113,7 +127,18 @@ class AddNewTaskScreen extends StatelessWidget {
                     },
                     width: 175,
                     suffixIcon: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _buildCupertinoDateTime(
+                          context,
+                          dateTime,
+                          CupertinoDatePickerMode.time,
+                          (newTime) {
+                            context.read<AddNewTaskViewModel>().updateOnly(
+                              time: newTime.toString(),
+                            );
+                          },
+                        );
+                      },
                       icon: SizedBox(
                         height: 20,
                         width: 20,
@@ -137,6 +162,29 @@ class AddNewTaskScreen extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  void _buildCupertinoDateTime(
+    BuildContext context,
+    DateTime initialDateTime,
+    CupertinoDatePickerMode mode,
+    ValueChanged<DateTime> onDateTimeChanged,
+  ) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => Container(
+        height: 200,
+        color: Colors.white,
+        child: SafeArea(
+          top: false,
+          child: CupertinoDatePicker(
+            initialDateTime: initialDateTime,
+            mode: mode,
+            onDateTimeChanged: onDateTimeChanged,
+          ),
+        ),
       ),
     );
   }
