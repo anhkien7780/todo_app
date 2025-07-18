@@ -41,6 +41,9 @@ class TodoItem extends StatelessWidget {
               children: [
                 Text(
                   todo.taskTitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
                   style: TextStyle(
                     fontSize: 16,
                     decoration: todo.isCompleted
@@ -53,6 +56,9 @@ class TodoItem extends StatelessWidget {
                 if (todo.time != null)
                   Text(
                     todo.time!,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
                     style: TextStyle(
                       fontSize: 14,
                       decoration: todo.isCompleted

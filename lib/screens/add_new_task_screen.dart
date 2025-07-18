@@ -5,7 +5,6 @@ import 'package:todo_app/view_models/add_new_task_view_model.dart';
 import 'package:todo_app/widgets/custom_text_field.dart';
 import 'package:todo_app/widgets/svg_image.dart';
 
-import '../models/category.dart';
 import '../models/todo.dart';
 import '../widgets/add_new_task_screen_header.dart';
 import '../widgets/category_selector.dart';
@@ -18,14 +17,6 @@ class AddNewTaskScreen extends StatefulWidget {
 }
 
 class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
-  late Category selectedCategory;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedCategory = Category.task;
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,18 +30,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
               },
             ),
             SizedBox(height: 24),
-            _buildBody(
-              context: context,
-              selectedCategory: selectedCategory,
-              onChange: (category) {
-                context.read<AddNewTaskViewModel>().updateOnly(
-                  category: category,
-                );
-                setState(() {
-                  selectedCategory = category;
-                });
-              },
-            ),
+            _buildBody(context: context),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -86,11 +66,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
     );
   }
 
-  Widget _buildBody({
-    required BuildContext context,
-    required Category selectedCategory,
-    required Function(Category) onChange,
-  }) {
+  Widget _buildBody({required BuildContext context}) {
     DateTime dateTime = DateTime.now();
 
     return Padding(
@@ -110,9 +86,20 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                   );
                 },
               ),
-              CategorySelector(
-                selectedCategory: selectedCategory,
-                onChange: onChange,
+              Consumer<AddNewTaskViewModel>(
+                builder:
+                    (
+                      BuildContext context,
+                      AddNewTaskViewModel viewModel,
+                      Widget? child,
+                    ) {
+                      return CategorySelector(
+                        selectedCategory: viewModel.todo.category,
+                        onChange: (category) {
+                          viewModel.updateOnly(category: category);
+                        },
+                      );
+                    },
               ),
               Row(
                 spacing: 8,
