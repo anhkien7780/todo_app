@@ -1,7 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../models/todo.dart';
-
 class SupabaseServices {
   static final String _url = "https://ijywzybzbkkqtlqrwkiu.supabase.co";
   static final String _anonKey =
@@ -11,6 +9,5 @@ class SupabaseServices {
       await Supabase.initialize(url: _url, anonKey: _anonKey);
 
   static SupabaseClient supabaseClient = Supabase.instance.client;
-
 
 }

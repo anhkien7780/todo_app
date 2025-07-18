@@ -17,6 +17,12 @@ class TodosScreen extends StatefulWidget {
 
 class _TodosScreenState extends State<TodosScreen> {
   @override
+  void initState() {
+    super.initState();
+    context.read<TodosViewModel>().fetchTodoList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final todosViewModel = context.read<TodosViewModel>();
     List<Todo> completedTodos = context.watch<TodosViewModel>().completedTodos;

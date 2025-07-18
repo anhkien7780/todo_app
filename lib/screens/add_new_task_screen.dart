@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/view_models/add_new_task_view_model.dart';
-import 'package:todo_app/view_models/todos_view_model.dart';
 import 'package:todo_app/widgets/custom_text_field.dart';
 import 'package:todo_app/widgets/svg_image.dart';
 
@@ -37,7 +36,7 @@ class AddNewTaskScreen extends StatelessWidget {
                     AddNewTaskViewModel viewModel = context
                         .read<AddNewTaskViewModel>();
                     Todo todo = viewModel.todo;
-                    viewModel.todosViewModel.addNewTodo(todo);
+                    viewModel.todosViewModel.addNewTask(todo);
                     Navigator.pop(context);
                   },
                   style: ButtonStyle(
