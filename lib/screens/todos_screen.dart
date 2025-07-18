@@ -8,9 +8,14 @@ import '../view_models/add_new_task_view_model.dart';
 import '../view_models/todos_view_model.dart';
 import '../widgets/todos_screen_header.dart';
 
-class TodosScreen extends StatelessWidget {
+class TodosScreen extends StatefulWidget {
   const TodosScreen({super.key});
 
+  @override
+  State<TodosScreen> createState() => _TodosScreenState();
+}
+
+class _TodosScreenState extends State<TodosScreen> {
   @override
   Widget build(BuildContext context) {
     final todosViewModel = context.read<TodosViewModel>();
@@ -33,9 +38,19 @@ class TodosScreen extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: 100, right: 16, left: 16),
                   addAutomaticKeepAlives: false,
                   children: [
-                    _buildUncompletedTodoList(unCompletedTodos),
+                    _buildTodoList(
+                      todoList: unCompletedTodos,
+                      onToggleCheckBox: (todo) {
+                        todosViewModel.toggleTodoStatus(todo);
+                      },
+                    ),
                     if (completedTodos.isNotEmpty) _buildCompletedSeparator(),
-                    _buildCompletedTodoList(completedTodos),
+                    _buildTodoList(
+                      todoList: completedTodos,
+                      onToggleCheckBox: (todo) {
+                        todosViewModel.toggleTodoStatus(todo);
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -83,7 +98,10 @@ class TodosScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildUncompletedTodoList(List<Todo> unCompletedTodos) {
+  Widget _buildTodoList({
+    required List<Todo> todoList,
+    required Function(Todo todo) onToggleCheckBox,
+  }) {
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
@@ -93,9 +111,17 @@ class TodosScreen extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
         child: Column(
-          children: List.generate(unCompletedTodos.length, (index) {
-            return TodoItem(todo: unCompletedTodos[index]);
-          }),
+          children: List.generate(
+            todoList.isEmpty ? 0 : todoList.length * 2 - 1,
+            (index) {
+              if (index.isOdd) {
+                return SizedBox(height: 1);
+              } else {
+                final todo = todoList[index ~/ 2];
+                return TodoItem(todo: todo, onToggleCheckBox: onToggleCheckBox);
+              }
+            },
+          ),
         ),
       ),
     );
@@ -110,24 +136,6 @@ class TodosScreen extends StatelessWidget {
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: Colors.black,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCompletedTodoList(List<Todo> completedTodos) {
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        color: Color(0xffE5E9ED),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-        child: Column(
-          children: List.generate(completedTodos.length, (index) {
-            return TodoItem(todo: completedTodos[index]);
-          }),
         ),
       ),
     );

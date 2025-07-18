@@ -2,72 +2,76 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/models/todo.dart';
 import 'package:todo_app/widgets/category_button.dart';
 
-class TodoItem extends StatefulWidget {
-  const TodoItem({super.key, required this.todo});
+class TodoItem extends StatelessWidget {
+  const TodoItem({
+    super.key,
+    required this.todo,
+    required this.onToggleCheckBox,
+  });
 
   final Todo todo;
-
-  @override
-  State<TodoItem> createState() => _TodoItemState();
-}
-
-class _TodoItemState extends State<TodoItem> {
-  bool isChecked = false;
+  final Function(Todo todo) onToggleCheckBox;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isChecked = !isChecked;
-        });
-      },
-      child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(color: Colors.white),
-        height: 80,
-        width: 358,
-        child: Row(
-          spacing: 12,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CategoryButton(category: widget.todo.category, isSelected: false,),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(color: Colors.white),
+      height: 80,
+      width: 358,
+      child: Row(
+        spacing: 12,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Stack(
+            children: [
+              CategoryButton(category: todo.category, isSelected: false),
+              Container(
+                height: 48,
+                width: 48,
+                color: Colors.white.withAlpha(todo.isCompleted ? 100 : 0),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  todo.title,
+                  style: TextStyle(
+                    fontSize: 16,
+                    decoration: todo.isCompleted
+                        ? TextDecoration.lineThrough
+                        : null,
+                    color: Colors.black.withAlpha(todo.isCompleted ? 170 : 250),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                if (todo.time != null)
                   Text(
-                    widget.todo.title,
+                    todo.time!,
                     style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      decoration: todo.isCompleted
+                          ? TextDecoration.lineThrough
+                          : null,
+                      color: Color(0xff1B1B1D).withAlpha(170),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  if (widget.todo.time != null)
-                    Text(
-                      widget.todo.time!,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xff1B1B1D).withAlpha(170),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                ],
-              ),
+              ],
             ),
-            Checkbox(
-              value: isChecked,
-              onChanged: (value) {
-                setState(() {
-                  isChecked = !isChecked;
-                });
-              },
-            ),
-          ],
-        ),
+          ),
+          Checkbox(
+            value: todo.isCompleted,
+            onChanged: (_) {
+              onToggleCheckBox(todo);
+            },
+          ),
+        ],
       ),
     );
   }
