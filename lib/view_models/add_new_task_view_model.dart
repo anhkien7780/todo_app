@@ -5,31 +5,26 @@ import 'package:todo_app/view_models/todos_view_model.dart';
 import '../models/todo.dart';
 
 class AddNewTaskViewModel extends ChangeNotifier {
-
   late final TodosViewModel todosViewModel;
 
   AddNewTaskViewModel({required this.todosViewModel});
 
-  Todo todo = Todo(title: "", category: Category.task, isCompleted: false);
-
-  void updateCategory(Category category) {
-    todo.category = category;
-    notifyListeners();
-  }
+  Todo todo = Todo(taskTitle: "", category: Category.task, isCompleted: false);
 
   void updateOnly({
-    String? title,
+    String? taskTitle,
     Category? category,
     String? date,
     String? time,
     String? note,
   }) {
-    todo
-      ..title = title ?? todo.title
-      ..category = category ?? todo.category
-      ..date = date ?? todo.date
-      ..time = time ?? todo.time
-      ..note = note ?? todo.note;
+    todo = todo.copyWith(
+      taskTitle: taskTitle ?? todo.taskTitle,
+      category: category ?? todo.category,
+      date: date ?? todo.date,
+      time: time ?? todo.time,
+      note: note ?? todo.note,
+    );
     notifyListeners();
   }
 }

@@ -40,7 +40,7 @@ class TodoItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  todo.title,
+                  todo.taskTitle,
                   style: TextStyle(
                     fontSize: 16,
                     decoration: todo.isCompleted

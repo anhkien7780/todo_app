@@ -7,7 +7,9 @@ import 'category_button.dart';
 
 class CategorySelector extends StatefulWidget {
   final Category? selectedCategory;
+
   const CategorySelector({super.key, this.selectedCategory});
+
   @override
   State<CategorySelector> createState() => _CategorySelectorState();
 }
@@ -41,7 +43,9 @@ class _CategorySelectorState extends State<CategorySelector> {
             CategoryButton(
               category: Category.task,
               onPressed: () {
-                context.read<AddNewTaskViewModel>().updateCategory(Category.task);
+                context.read<AddNewTaskViewModel>().updateOnly(
+                  category: Category.task,
+                );
                 setState(() {
                   selectedCategory = Category.task;
                 });
@@ -51,7 +55,9 @@ class _CategorySelectorState extends State<CategorySelector> {
             CategoryButton(
               category: Category.event,
               onPressed: () {
-                context.read<AddNewTaskViewModel>().updateCategory(Category.event);
+                context.read<AddNewTaskViewModel>().updateOnly(
+                  category: Category.event,
+                );
                 setState(() {
                   selectedCategory = Category.event;
                 });
@@ -61,7 +67,9 @@ class _CategorySelectorState extends State<CategorySelector> {
             CategoryButton(
               category: Category.goal,
               onPressed: () {
-                context.read<AddNewTaskViewModel>().updateCategory(Category.goal);
+                context.read<AddNewTaskViewModel>().updateOnly(
+                  category: Category.goal,
+                );
                 setState(() {
                   selectedCategory = Category.goal;
                 });

@@ -74,7 +74,9 @@ class AddNewTaskScreen extends StatelessWidget {
                 maxLines: 1,
                 hint: "Task Title",
                 onChange: (value) {
-                  context.read<AddNewTaskViewModel>().updateOnly(title: value);
+                  context.read<AddNewTaskViewModel>().updateOnly(
+                    taskTitle: value,
+                  );
                 },
               ),
               CategorySelector(),

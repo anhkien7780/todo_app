@@ -4,7 +4,7 @@ import 'package:todo_app/models/todo.dart';
 
 class TodosViewModel extends ChangeNotifier {
   List<Todo> completedTodos = <Todo>[
-    Todo(title: "title", category: Category.event, isCompleted: true),
+    Todo(taskTitle: "title", category: Category.event, isCompleted: true),
   ];
 
   List<Todo> unCompletedTodos = <Todo>[];
@@ -14,20 +14,20 @@ class TodosViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleTodoStatus(Todo todo){
-    if(todo.isCompleted == false){
+  void toggleTodoStatus(Todo todo) {
+    if (todo.isCompleted == false) {
       int index = unCompletedTodos.indexOf(todo);
-      if(index != -1){
+      if (index != -1) {
         unCompletedTodos.removeAt(index);
-        todo.isCompleted = true;
-        completedTodos.add(todo);
+        Todo newCompletedTodo = todo.copyWith(isCompleted: true);
+        completedTodos.add(newCompletedTodo);
       }
-    } else{
+    } else {
       int index = completedTodos.indexOf(todo);
-      if(index != -1){
+      if (index != -1) {
         completedTodos.removeAt(index);
-        todo.isCompleted = false;
-        unCompletedTodos.add(todo);
+        Todo newUncompletedTodo = todo.copyWith(isCompleted: false);
+        unCompletedTodos.add(newUncompletedTodo);
       }
     }
     notifyListeners();

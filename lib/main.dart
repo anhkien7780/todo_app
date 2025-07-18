@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/networks/supabase_services.dart';
 import 'package:todo_app/screens/todos_screen.dart';
 import 'package:todo_app/view_models/todos_view_model.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SupabaseServices.supabaseInit();
   runApp(const MyApp());
 }
 
