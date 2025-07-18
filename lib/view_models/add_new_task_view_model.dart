@@ -6,6 +6,15 @@ import '../models/todo.dart';
 
 class AddNewTaskViewModel extends ChangeNotifier {
   late final TodosViewModel todosViewModel;
+  final dateController = TextEditingController();
+  final timeController = TextEditingController();
+
+  @override
+  void dispose() {
+    dateController.dispose();
+    timeController.dispose();
+    super.dispose();
+  }
 
   AddNewTaskViewModel({required this.todosViewModel});
 
@@ -25,6 +34,12 @@ class AddNewTaskViewModel extends ChangeNotifier {
       time: time ?? todo.time,
       note: note ?? todo.note,
     );
+    if(date != null){
+      dateController.text = date;
+    }
+    if(time != null){
+      timeController.text = time;
+    }
     notifyListeners();
   }
 }

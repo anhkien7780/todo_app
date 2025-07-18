@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/view_models/add_new_task_view_model.dart';
 import 'package:todo_app/widgets/custom_text_field.dart';
@@ -9,14 +10,9 @@ import '../models/todo.dart';
 import '../widgets/add_new_task_screen_header.dart';
 import '../widgets/category_selector.dart';
 
-class AddNewTaskScreen extends StatefulWidget {
+class AddNewTaskScreen extends StatelessWidget {
   const AddNewTaskScreen({super.key});
 
-  @override
-  State<AddNewTaskScreen> createState() => _AddNewTaskScreenState();
-}
-
-class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -101,74 +97,74 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                       );
                     },
               ),
-              Row(
-                spacing: 8,
-                children: [
-                  CustomTextField(
-                    hint: "Date",
-                    title: "Date",
-                    onChange: (newDate) {
-                      context.read<AddNewTaskViewModel>().updateOnly(
-                        date: newDate,
-                      );
-                    },
-                    width: 175,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        _buildCupertinoDateTime(
-                          context,
-                          dateTime,
-                          CupertinoDatePickerMode.date,
-                          (newDate) {
-                            context.read<AddNewTaskViewModel>().updateOnly(
-                              date: newDate.toString(),
+              Consumer(
+                builder: (context, AddNewTaskViewModel viewModel, child) {
+                  return Row(
+                    spacing: 8,
+                    children: [
+                      CustomTextField(
+                        controller: viewModel.dateController,
+                        hint: "Date",
+                        title: "Date",
+                        onChange: (newDate) {
+                          viewModel.updateOnly(date: newDate);
+                        },
+                        width: 175,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            _buildCupertinoDateTime(
+                              context,
+                              dateTime,
+                              CupertinoDatePickerMode.date,
+                              (newDate) {
+                                final formatedDate = DateFormat("dd/MM/yyyy").format(newDate);
+                                viewModel.updateOnly(date: formatedDate.toString());
+                              },
                             );
                           },
-                        );
-                      },
-                      icon: SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: SVGImage(
-                          imageUri: "lib/assets/icons/ic_calendar.svg",
+                          icon: SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: SVGImage(
+                              imageUri: "lib/assets/icons/ic_calendar.svg",
+                            ),
+                          ),
                         ),
+                        maxLines: 1,
                       ),
-                    ),
-                    maxLines: 1,
-                  ),
-                  CustomTextField(
-                    hint: "Time",
-                    title: "Time",
-                    onChange: (value) {
-                      context.read<AddNewTaskViewModel>().updateOnly(
-                        time: value,
-                      );
-                    },
-                    width: 175,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        _buildCupertinoDateTime(
-                          context,
-                          dateTime,
-                          CupertinoDatePickerMode.time,
-                          (newTime) {
-                            context.read<AddNewTaskViewModel>().updateOnly(
-                              time: newTime.toString(),
+                      CustomTextField(
+                        hint: "Time",
+                        title: "Time",
+                        controller: viewModel.timeController,
+                        onChange: (value) {
+                          viewModel.updateOnly(time: value);
+                        },
+                        width: 175,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            _buildCupertinoDateTime(
+                              context,
+                              dateTime,
+                              CupertinoDatePickerMode.time,
+                              (newTime) {
+                                final formatedTime = DateFormat("hh:mm a").format(newTime);
+                                viewModel.updateOnly(time: formatedTime.toString());
+                              },
                             );
                           },
-                        );
-                      },
-                      icon: SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: SVGImage(
-                          imageUri: "lib/assets/icons/ic_clock.svg",
+                          icon: SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: SVGImage(
+                              imageUri: "lib/assets/icons/ic_clock.svg",
+                            ),
+                          ),
                         ),
+                        maxLines: 1,
                       ),
-                    ),
-                    maxLines: 1,
-                  ),
-                ],
+                    ],
+                  );
+                },
               ),
               CustomTextField(
                 hint: "Notes",
