@@ -53,7 +53,7 @@ class TodoItem extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                if (todo.time != null)
+                if (todo.time != null && todo.time!.isNotEmpty)
                   Text(
                     todo.time!,
                     maxLines: 1,
