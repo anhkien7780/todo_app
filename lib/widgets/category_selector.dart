@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../models/category.dart';
-import '../view_models/add_new_task_view_model.dart';
 import 'category_button.dart';
 
-class CategorySelector extends StatefulWidget {
-  final Category? selectedCategory;
+class CategorySelector extends StatelessWidget {
+  final Category selectedCategory;
+  final Function(Category) onChange;
 
-  const CategorySelector({super.key, this.selectedCategory});
-
-  @override
-  State<CategorySelector> createState() => _CategorySelectorState();
-}
-
-class _CategorySelectorState extends State<CategorySelector> {
-  late Category selectedCategory;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedCategory = widget.selectedCategory ?? Category.task;
-  }
+  const CategorySelector({
+    super.key,
+    required this.selectedCategory,
+    required this.onChange,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,38 +32,17 @@ class _CategorySelectorState extends State<CategorySelector> {
           children: [
             CategoryButton(
               category: Category.task,
-              onPressed: () {
-                context.read<AddNewTaskViewModel>().updateOnly(
-                  category: Category.task,
-                );
-                setState(() {
-                  selectedCategory = Category.task;
-                });
-              },
+              onPressed: () => onChange(Category.task),
               isSelected: selectedCategory == Category.task,
             ),
             CategoryButton(
               category: Category.event,
-              onPressed: () {
-                context.read<AddNewTaskViewModel>().updateOnly(
-                  category: Category.event,
-                );
-                setState(() {
-                  selectedCategory = Category.event;
-                });
-              },
+              onPressed: () => onChange(Category.event),
               isSelected: selectedCategory == Category.event,
             ),
             CategoryButton(
               category: Category.goal,
-              onPressed: () {
-                context.read<AddNewTaskViewModel>().updateOnly(
-                  category: Category.goal,
-                );
-                setState(() {
-                  selectedCategory = Category.goal;
-                });
-              },
+              onPressed: () => onChange(Category.goal),
               isSelected: selectedCategory == Category.goal,
             ),
           ],

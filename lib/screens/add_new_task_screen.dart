@@ -5,12 +5,26 @@ import 'package:todo_app/view_models/add_new_task_view_model.dart';
 import 'package:todo_app/widgets/custom_text_field.dart';
 import 'package:todo_app/widgets/svg_image.dart';
 
+import '../models/category.dart';
 import '../models/todo.dart';
 import '../widgets/add_new_task_screen_header.dart';
 import '../widgets/category_selector.dart';
 
-class AddNewTaskScreen extends StatelessWidget {
+class AddNewTaskScreen extends StatefulWidget {
   const AddNewTaskScreen({super.key});
+
+  @override
+  State<AddNewTaskScreen> createState() => _AddNewTaskScreenState();
+}
+
+class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
+  late Category selectedCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCategory = Category.task;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +39,18 @@ class AddNewTaskScreen extends StatelessWidget {
               },
             ),
             SizedBox(height: 24),
-            _buildBody(context),
+            _buildBody(
+              context: context,
+              selectedCategory: selectedCategory,
+              onChange: (category) {
+                context.read<AddNewTaskViewModel>().updateOnly(
+                  category: category,
+                );
+                setState(() {
+                  selectedCategory = category;
+                });
+              },
+            ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -61,7 +86,11 @@ class AddNewTaskScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _buildBody({
+    required BuildContext context,
+    required Category selectedCategory,
+    required Function(Category) onChange,
+  }) {
     DateTime dateTime = DateTime.now();
 
     return Padding(
@@ -81,7 +110,10 @@ class AddNewTaskScreen extends StatelessWidget {
                   );
                 },
               ),
-              CategorySelector(),
+              CategorySelector(
+                selectedCategory: selectedCategory,
+                onChange: onChange,
+              ),
               Row(
                 spacing: 8,
                 children: [
