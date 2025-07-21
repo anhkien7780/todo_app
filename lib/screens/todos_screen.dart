@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/models/todo.dart';
 import 'package:todo_app/screens/add_new_task_screen.dart';
+import 'package:todo_app/widgets/full_screen_loading.dart';
 import 'package:todo_app/widgets/todo_item.dart';
 
 import '../view_models/add_new_task_view_model.dart';
@@ -36,6 +37,7 @@ class _TodosScreenState extends State<TodosScreen> {
     List<Todo> unCompletedTodos = context
         .watch<TodosViewModel>()
         .unCompletedTodos;
+    bool isLoading = context.watch<TodosViewModel>().isLoading;
     return SafeArea(
       child: Center(
         child: Stack(
@@ -84,6 +86,7 @@ class _TodosScreenState extends State<TodosScreen> {
               left: 16,
               child: _buildAskNewTask(context, todosViewModel),
             ),
+            if (isLoading) FullScreenLoading(),
           ],
         ),
       ),

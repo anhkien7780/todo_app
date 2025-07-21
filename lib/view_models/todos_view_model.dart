@@ -6,17 +6,25 @@ class TodosViewModel extends ChangeNotifier {
   List<Todo> completedTodos = <Todo>[];
 
   List<Todo> unCompletedTodos = <Todo>[];
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
 
   Future<void> fetchTodoList() async {
-    final response = await SupabaseServices.supabaseClient
-        .from("todos")
-        .select();
-    final todos = response.map((todo) => Todo.fromJson(todo)).toList();
+    _isLoading = true;
+    try {
+      final response = await SupabaseServices.supabaseClient
+          .from("todos")
+          .select();
+      final todos = response.map((todo) => Todo.fromJson(todo)).toList();
 
-    completedTodos = todos.where((todo) => todo.isCompleted).toList();
-    unCompletedTodos = todos.where((todo) => !todo.isCompleted).toList();
-
-    notifyListeners();
+      completedTodos = todos.where((todo) => todo.isCompleted).toList();
+      unCompletedTodos = todos.where((todo) => !todo.isCompleted).toList();
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      print("Fetch todo list is failed: ${e.toString()}");
+    }
   }
 
   Future<void> addNewTask(Todo todo) async {
@@ -62,7 +70,7 @@ class TodosViewModel extends ChangeNotifier {
           .delete()
           .eq("id", todo.id);
 
-      if(todo.isCompleted){
+      if (todo.isCompleted) {
         completedTodos.remove(todo);
       } else {
         unCompletedTodos.remove(todo);
@@ -70,9 +78,9 @@ class TodosViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("Deleted failed: ${e.toString()}");
-      if(todo.isCompleted){
+      if (todo.isCompleted) {
         completedTodos.add(todo);
-      } else{
+      } else {
         unCompletedTodos.add(todo);
       }
       notifyListeners();
