@@ -42,16 +42,29 @@ class _TodosScreenState extends State<TodosScreen> {
                 top: 158,
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 100, right: 16, left: 16),
-                  child: CustomScrollView(
-                    slivers: [
+                  child: ListView(
+                    children: [
                       _buildTodoList(
+                        context: context,
                         todoList: unCompletedTodos,
                         onToggleCheckBox: (todo) {
                           todosViewModel.toggleTodoStatus(todo);
                         },
                       ),
-                      if (completedTodos.isNotEmpty) _buildCompletedSeparator(),
+                      if (completedTodos.isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 24),
+                          child: Text(
+                            "Completed",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
                       _buildTodoList(
+                        context: context,
                         todoList: completedTodos,
                         onToggleCheckBox: (todo) {
                           todosViewModel.toggleTodoStatus(todo);
@@ -106,33 +119,31 @@ class _TodosScreenState extends State<TodosScreen> {
   }
 
   Widget _buildTodoList({
+    required BuildContext context,
     required List<Todo> todoList,
     required Function(Todo todo) onToggleCheckBox,
   }) {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) =>
-            TodoItem(todo: todoList[index], onToggleCheckBox: onToggleCheckBox),
-        childCount: todoList.length,
-      ),
-    );
-  }
-
-  Widget _buildCompletedSeparator() {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) => Padding(
-          padding: EdgeInsets.symmetric(vertical: 24),
-          child: Text(
-            "Completed",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+      child: ListView.separated(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        addAutomaticKeepAlives: false,
+        itemBuilder: (context, index) {
+          return Dismissible(
+            key: Key(todoList[index].id),
+            onDismissed: (direction) {
+              context.read<TodosViewModel>().removeTodoTask(todoList[index]);
+            },
+            child: TodoItem(
+              todo: todoList[index],
+              onToggleCheckBox: onToggleCheckBox,
             ),
-          ),
-        ),
-        childCount: 1,
+          );
+        },
+        separatorBuilder: (_, _) => Divider(height: 1),
+        itemCount: todoList.length,
       ),
     );
   }
