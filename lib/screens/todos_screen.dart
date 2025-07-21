@@ -40,24 +40,25 @@ class _TodosScreenState extends State<TodosScreen> {
               Positioned.fill(child: TodosScreenHeader()),
               Positioned.fill(
                 top: 158,
-                child: ListView(
+                child: Padding(
                   padding: EdgeInsets.only(bottom: 100, right: 16, left: 16),
-                  addAutomaticKeepAlives: false,
-                  children: [
-                    _buildTodoList(
-                      todoList: unCompletedTodos,
-                      onToggleCheckBox: (todo) {
-                        todosViewModel.toggleTodoStatus(todo);
-                      },
-                    ),
-                    if (completedTodos.isNotEmpty) _buildCompletedSeparator(),
-                    _buildTodoList(
-                      todoList: completedTodos,
-                      onToggleCheckBox: (todo) {
-                        todosViewModel.toggleTodoStatus(todo);
-                      },
-                    ),
-                  ],
+                  child: CustomScrollView(
+                    slivers: [
+                      _buildTodoList(
+                        todoList: unCompletedTodos,
+                        onToggleCheckBox: (todo) {
+                          todosViewModel.toggleTodoStatus(todo);
+                        },
+                      ),
+                      if (completedTodos.isNotEmpty) _buildCompletedSeparator(),
+                      _buildTodoList(
+                        todoList: completedTodos,
+                        onToggleCheckBox: (todo) {
+                          todosViewModel.toggleTodoStatus(todo);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Positioned(
@@ -108,41 +109,30 @@ class _TodosScreenState extends State<TodosScreen> {
     required List<Todo> todoList,
     required Function(Todo todo) onToggleCheckBox,
   }) {
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        color: Color(0xffE5E9ED),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-        child: Column(
-          children: List.generate(
-            todoList.isEmpty ? 0 : todoList.length * 2 - 1,
-            (index) {
-              if (index.isOdd) {
-                return SizedBox(height: 1);
-              } else {
-                final todo = todoList[index ~/ 2];
-                return TodoItem(todo: todo, onToggleCheckBox: onToggleCheckBox);
-              }
-            },
-          ),
-        ),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) =>
+            TodoItem(todo: todoList[index], onToggleCheckBox: onToggleCheckBox),
+        childCount: todoList.length,
       ),
     );
   }
 
   Widget _buildCompletedSeparator() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 24),
-      child: Text(
-        "Completed",
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          color: Colors.black,
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) => Padding(
+          padding: EdgeInsets.symmetric(vertical: 24),
+          child: Text(
+            "Completed",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
         ),
+        childCount: 1,
       ),
     );
   }
