@@ -18,7 +18,6 @@ class TodoItem extends StatelessWidget {
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(color: Colors.white),
       height: 80,
-      width: 358,
       child: Row(
         spacing: 12,
         mainAxisAlignment: MainAxisAlignment.center,
