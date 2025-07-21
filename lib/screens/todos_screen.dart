@@ -142,7 +142,8 @@ class _TodosScreenState extends State<TodosScreen> {
             ),
           );
         },
-        separatorBuilder: (_, _) => Divider(height: 1),
+        separatorBuilder: (_, _) =>
+            Divider(height: 1, color: Color(0xffE5E9ED)),
         itemCount: todoList.length,
       ),
     );
