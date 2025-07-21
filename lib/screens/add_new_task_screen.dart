@@ -15,48 +15,62 @@ class AddNewTaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        color: Color(0xffF1F5F9),
-        child: Column(
-          children: [
-            AddNewTaskScreenHeader(
-              onCloseButtonPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            SizedBox(height: 24),
-            _buildBody(context: context),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: OutlinedButton(
-                  onPressed: () {
-                    AddNewTaskViewModel viewModel = context
-                        .read<AddNewTaskViewModel>();
-                    Todo todo = viewModel.todo;
-                    viewModel.todosViewModel.addNewTask(todo);
-                    Navigator.pop(context);
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Color(0xff4A3780)),
-                  ),
-                  child: const Text(
-                    "Save",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          color: Color(0xffF1F5F9),
+          child: Column(
+            children: [
+              AddNewTaskScreenHeader(
+                onCloseButtonPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              SizedBox(height: 24),
+              _buildBody(context: context),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      AddNewTaskViewModel viewModel = context
+                          .read<AddNewTaskViewModel>();
+                      Todo todo = viewModel.todo;
+                      if (todo.taskTitle.isEmpty) {
+                        final messenger = ScaffoldMessenger.of(context);
+                        messenger.hideCurrentSnackBar();
+                        messenger.showSnackBar(
+                          const SnackBar(
+                            content: Text("Task Title can't be empty"),
+                          ),
+                        );
+                        return;
+                      }
+                      viewModel.todosViewModel.addNewTask(todo);
+                      Navigator.pop(context);
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(
+                        Color(0xff4A3780),
+                      ),
+                    ),
+                    child: const Text(
+                      "Save",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-          ],
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );
@@ -97,7 +111,7 @@ class AddNewTaskScreen extends StatelessWidget {
                       );
                     },
               ),
-              Consumer(
+              Consumer<AddNewTaskViewModel>(
                 builder: (context, AddNewTaskViewModel viewModel, child) {
                   return Row(
                     spacing: 8,
@@ -117,8 +131,12 @@ class AddNewTaskScreen extends StatelessWidget {
                               dateTime,
                               CupertinoDatePickerMode.date,
                               (newDate) {
-                                final formatedDate = DateFormat("dd/MM/yyyy").format(newDate);
-                                viewModel.updateOnly(date: formatedDate.toString());
+                                final formatedDate = DateFormat(
+                                  "dd/MM/yyyy",
+                                ).format(newDate);
+                                viewModel.updateOnly(
+                                  date: formatedDate.toString(),
+                                );
                               },
                             );
                           },
@@ -147,8 +165,12 @@ class AddNewTaskScreen extends StatelessWidget {
                               dateTime,
                               CupertinoDatePickerMode.time,
                               (newTime) {
-                                final formatedTime = DateFormat("hh:mm a").format(newTime);
-                                viewModel.updateOnly(time: formatedTime.toString());
+                                final formatedTime = DateFormat(
+                                  "hh:mm a",
+                                ).format(newTime);
+                                viewModel.updateOnly(
+                                  time: formatedTime.toString(),
+                                );
                               },
                             );
                           },
