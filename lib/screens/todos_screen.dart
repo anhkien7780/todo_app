@@ -24,64 +24,67 @@ class _TodosScreenState extends State<TodosScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xffF1F5F9),
+      body: _buildBody(context),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
     final todosViewModel = context.read<TodosViewModel>();
     List<Todo> completedTodos = context.watch<TodosViewModel>().completedTodos;
     List<Todo> unCompletedTodos = context
         .watch<TodosViewModel>()
         .unCompletedTodos;
-
-    return Scaffold(
-      backgroundColor: Color(0xffF1F5F9),
-      body: SafeArea(
-        child: Center(
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              Positioned.fill(child: TodosScreenHeader()),
-              Positioned.fill(
-                top: 158,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 100, right: 16, left: 16),
-                  child: ListView(
-                    children: [
-                      _buildTodoList(
-                        context: context,
-                        todoList: unCompletedTodos,
-                        onToggleCheckBox: (todo) {
-                          todosViewModel.toggleTodoStatus(todo);
-                        },
-                      ),
-                      if (completedTodos.isNotEmpty)
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24),
-                          child: Text(
-                            "Completed",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
+    return SafeArea(
+      child: Center(
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Positioned.fill(child: TodosScreenHeader()),
+            Positioned.fill(
+              top: 158,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 100, right: 16, left: 16),
+                child: ListView(
+                  children: [
+                    _buildTodoList(
+                      context: context,
+                      todoList: unCompletedTodos,
+                      onToggleCheckBox: (todo) {
+                        todosViewModel.toggleTodoStatus(todo);
+                      },
+                    ),
+                    if (completedTodos.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24),
+                        child: Text(
+                          "Completed",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                      _buildTodoList(
-                        context: context,
-                        todoList: completedTodos,
-                        onToggleCheckBox: (todo) {
-                          todosViewModel.toggleTodoStatus(todo);
-                        },
                       ),
-                    ],
-                  ),
+                    _buildTodoList(
+                      context: context,
+                      todoList: completedTodos,
+                      onToggleCheckBox: (todo) {
+                        todosViewModel.toggleTodoStatus(todo);
+                      },
+                    ),
+                  ],
                 ),
               ),
-              Positioned(
-                bottom: 24,
-                right: 16,
-                left: 16,
-                child: _buildAskNewTask(context, todosViewModel),
-              ),
-            ],
-          ),
+            ),
+            Positioned(
+              bottom: 24,
+              right: 16,
+              left: 16,
+              child: _buildAskNewTask(context, todosViewModel),
+            ),
+          ],
         ),
       ),
     );
