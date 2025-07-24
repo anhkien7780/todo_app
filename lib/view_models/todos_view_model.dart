@@ -23,7 +23,7 @@ class TodosViewModel extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } catch (e) {
-      print("Fetch todo list is failed: ${e.toString()}");
+      throw Exception("Fetch todo list is failed: ${e.toString()}");
     }
   }
 
@@ -38,7 +38,7 @@ class TodosViewModel extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print(e.toString());
+      throw Exception(e.toString());
     }
   }
 
@@ -59,7 +59,7 @@ class TodosViewModel extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print(e.toString());
+      throw Exception(e.toString());
     }
   }
 
@@ -77,13 +77,13 @@ class TodosViewModel extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print("Deleted failed: ${e.toString()}");
       if (todo.isCompleted) {
         completedTodos.add(todo);
       } else {
         unCompletedTodos.add(todo);
       }
       notifyListeners();
+      throw Exception("Deleted failed: ${e.toString()}");
     }
   }
 }
