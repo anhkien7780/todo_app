@@ -11,7 +11,9 @@ import '../widgets/add_new_task_screen_header.dart';
 import '../widgets/category_selector.dart';
 
 class AddNewTaskScreen extends StatelessWidget {
-  const AddNewTaskScreen({super.key});
+  final Function(Todo todo) onAddButtonPressed;
+
+  const AddNewTaskScreen({super.key, required this.onAddButtonPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class AddNewTaskScreen extends StatelessWidget {
                         );
                         return;
                       }
-                      viewModel.todosViewModel.addNewTask(todo);
+                      onAddButtonPressed(todo);
                       Navigator.pop(context);
                     },
                     style: ButtonStyle(

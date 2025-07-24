@@ -107,8 +107,12 @@ class _TodosScreenState extends State<TodosScreen> {
           builder: (context) {
             return ChangeNotifierProvider(
               create: (_) =>
-                  AddNewTaskViewModel(todosViewModel: todosViewModel),
-              child: AddNewTaskScreen(),
+                  AddNewTaskViewModel(),
+              child: AddNewTaskScreen(
+                onAddButtonPressed: (todo) {
+                  todosViewModel.addNewTask(todo);
+                },
+              ),
             );
           },
         );
