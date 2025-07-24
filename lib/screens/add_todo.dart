@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/view_models/add_new_task_view_model.dart';
+import 'package:todo_app/view_models/add_todo_view_model.dart';
 import 'package:todo_app/widgets/custom_text_field.dart';
 import 'package:todo_app/widgets/svg_image.dart';
 
@@ -10,10 +10,10 @@ import '../models/todo.dart';
 import '../widgets/add_new_task_screen_header.dart';
 import '../widgets/category_selector.dart';
 
-class AddNewTaskScreen extends StatelessWidget {
+class AddTodo extends StatelessWidget {
   final Function(Todo todo) onAddButtonPressed;
 
-  const AddNewTaskScreen({super.key, required this.onAddButtonPressed});
+  const AddTodo({super.key, required this.onAddButtonPressed});
 
   @override
   Widget build(BuildContext context) {

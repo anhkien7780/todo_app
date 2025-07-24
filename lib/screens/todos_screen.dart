@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/models/todo.dart';
-import 'package:todo_app/screens/add_new_task_screen.dart';
+import 'package:todo_app/screens/add_todo.dart';
 import 'package:todo_app/widgets/full_screen_loading.dart';
 import 'package:todo_app/widgets/todo_item.dart';
 
-import '../view_models/add_new_task_view_model.dart';
+import '../view_models/add_todo_view_model.dart';
 import '../view_models/todos_view_model.dart';
 import '../widgets/todos_screen_header.dart';
 
@@ -108,7 +108,7 @@ class _TodosScreenState extends State<TodosScreen> {
             return ChangeNotifierProvider(
               create: (_) =>
                   AddNewTaskViewModel(),
-              child: AddNewTaskScreen(
+              child: AddTodo(
                 onAddButtonPressed: (todo) {
                   todosViewModel.addNewTask(todo);
                 },
