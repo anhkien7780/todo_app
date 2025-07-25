@@ -17,66 +17,72 @@ class AddTodo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-            color: Color(0xffF1F5F9),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                AddNewTaskScreenHeader(
-                  onCloseButtonPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                SizedBox(height: 24),
-                _buildBody(context: context),
-                const SizedBox(height: 110,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        AddNewTaskViewModel viewModel = context
-                            .read<AddNewTaskViewModel>();
-                        Todo todo = viewModel.todo;
-                        if (todo.taskTitle.isEmpty) {
-                          final messenger = ScaffoldMessenger.of(context);
-                          messenger.hideCurrentSnackBar();
-                          messenger.showSnackBar(
-                            const SnackBar(
-                              content: Text("Task Title can't be empty"),
-                            ),
-                          );
-                          return;
-                        }
-                        onAddButtonPressed(todo);
-                        Navigator.pop(context);
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(
-                          Color(0xff4A3780),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              color: Color(0xffF1F5F9),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  AddNewTaskScreenHeader(
+                    onCloseButtonPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  SizedBox(height: 24),
+                  _buildBody(context: context),
+                  const SizedBox(height: 110,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          AddNewTaskViewModel viewModel = context
+                              .read<AddNewTaskViewModel>();
+                          Todo todo = viewModel.todo;
+                          if (todo.taskTitle.isEmpty) {
+                            final messenger = ScaffoldMessenger.of(context);
+                            messenger.hideCurrentSnackBar();
+                            messenger.showSnackBar(
+                              const SnackBar(
+                                content: Text("Task Title can't be empty"),
+                              ),
+                            );
+                            return;
+                          }
+                          onAddButtonPressed(todo);
+                          Navigator.pop(context);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(
+                            Color(0xff4A3780),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        "Save",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                        child: const Text(
+                          "Save",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
