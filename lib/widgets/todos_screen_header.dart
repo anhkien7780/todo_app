@@ -17,7 +17,7 @@ class TodosScreenHeader extends StatelessWidget {
             children: [
               Container(
                 width: 390,
-                height: 222,
+                height: 252,
                 decoration: BoxDecoration(color: Color(0xff4A3780)),
               ),
               Positioned(

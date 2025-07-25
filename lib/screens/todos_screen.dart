@@ -38,57 +38,55 @@ class _TodosScreenState extends State<TodosScreen> {
         .watch<TodosViewModel>()
         .unCompletedTodos;
     bool isLoading = context.watch<TodosViewModel>().isLoading;
-    return SafeArea(
-      child: Center(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Positioned.fill(child: TodosScreenHeader()),
-            Positioned.fill(
-              top: 158,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 100, right: 16, left: 16),
-                child: ListView(
-                  children: [
-                    _buildTodoList(
-                      context: context,
-                      todoList: unCompletedTodos,
-                      onToggleCheckBox: (todo) {
-                        todosViewModel.toggleTodoStatus(todo);
-                      },
-                    ),
-                    if (completedTodos.isNotEmpty)
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 24),
-                        child: Text(
-                          "Completed",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+    return Center(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned.fill(child: TodosScreenHeader()),
+          Positioned.fill(
+            top: 158,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 100, right: 16, left: 16),
+              child: ListView(
+                children: [
+                  _buildTodoList(
+                    context: context,
+                    todoList: unCompletedTodos,
+                    onToggleCheckBox: (todo) {
+                      todosViewModel.toggleTodoStatus(todo);
+                    },
+                  ),
+                  if (completedTodos.isNotEmpty)
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24),
+                      child: Text(
+                        "Completed",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    _buildTodoList(
-                      context: context,
-                      todoList: completedTodos,
-                      onToggleCheckBox: (todo) {
-                        todosViewModel.toggleTodoStatus(todo);
-                      },
                     ),
-                  ],
-                ),
+                  _buildTodoList(
+                    context: context,
+                    todoList: completedTodos,
+                    onToggleCheckBox: (todo) {
+                      todosViewModel.toggleTodoStatus(todo);
+                    },
+                  ),
+                ],
               ),
             ),
-            Positioned(
-              bottom: 24,
-              right: 16,
-              left: 16,
-              child: _buildAskNewTask(context, todosViewModel),
-            ),
-            if (isLoading) FullScreenLoading(),
-          ],
-        ),
+          ),
+          Positioned(
+            bottom: 24,
+            right: 16,
+            left: 16,
+            child: _buildAskNewTask(context, todosViewModel),
+          ),
+          if (isLoading) FullScreenLoading(),
+        ],
       ),
     );
   }
